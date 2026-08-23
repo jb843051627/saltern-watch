@@ -120,11 +120,13 @@ func (s *AlertService) raiseQuiet(kind string, sev model.AlertSeverity, subjectT
 	return 1
 }
 
-// clearQuiet 关闭某主体残留的读数类告警（恢复正常）。
+// clearQuiet 关闭某主体残留的读数类告警（恢复正常）：低浓度/高温/液位骤降三类。
 func (s *AlertService) clearQuiet(subjectType string, id int64) {
-	open, err := s.st.FindOpenByDedupKey(model.DedupKeyOf("low_be", subjectType, id))
-	if err == nil {
-		_ = s.st.UpdateAlertStatus(open.ID, model.AlertClosed, s.clock.Now())
+	for _, kind := range []string{"low_be", "high_temp", "level_drop"} {
+		open, err := s.st.FindOpenByDedupKey(model.DedupKeyOf(kind, subjectType, id))
+		if err == nil {
+			_ = s.st.UpdateAlertStatus(open.ID, model.AlertClosed, s.clock.Now())
+		}
 	}
 }
 

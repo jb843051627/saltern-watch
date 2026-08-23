@@ -89,7 +89,7 @@ func (s *DashboardService) Snapshot() (*Dashboard, error) {
 	}
 	for _, p := range ponds {
 		if r, err := s.st.LatestReading(p.ID); err == nil {
-			d.LatestReadings[p.ID] = model.CompensateBe(r.Be, r.TempC)
+			d.LatestReadings[p.ID] = r.Be
 		}
 	}
 	d.GeneratedAt = s.reports.FormatStamp(now)
