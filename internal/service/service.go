@@ -44,6 +44,7 @@ func New(st *store.DB, ck clock.Clock, cfg *config.Config) *Service {
 	s.Quality = &QualityService{st: st, clock: ck}
 	s.Sensors = &SensorService{st: st, clock: ck}
 	s.PondGroups = &PondGroupService{st: st, clock: ck}
+	s.Brine.sensors = s.Sensors
 	return s
 }
 

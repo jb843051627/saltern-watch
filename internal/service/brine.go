@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/jb843051627/saltern-watch/internal/clock"
@@ -13,9 +14,10 @@ import (
 
 // BrineService 卤水读数采集与校验。
 type BrineService struct {
-	st    *store.DB
-	clock clock.Clock
-	cfg   *config.Config
+	st      *store.DB
+	clock   clock.Clock
+	cfg     *config.Config
+	sensors *SensorService
 }
 
 // Ingest 单条读数采集：校验 → 温度补偿 → 突变标记 → 落库。
@@ -30,6 +32,15 @@ func (s *BrineService) Ingest(pondID int64, be, tempC, levelCm float64, source s
 	}
 	if err := model.ValidateReading(r); err != nil {
 		return nil, err
+	}
+	// 传感器来源读数先应用台账校准偏移（sensor:<id>）。
+	if strings.HasPrefix(r.Source, "sensor:") && s.sensors != nil {
+		var sensorID int64
+		if n, _ := fmt.Sscanf(r.Source, "sensor:%d", &sensorID); n == 1 {
+			if calibrated, err := s.sensors.ApplyOffset(sensorID, r.Be); err == nil {
+				r.Be = calibrated
+			}
+		}
 	}
 	prev, err := s.st.LatestReading(pondID)
 	if err == nil {
