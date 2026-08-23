@@ -10,7 +10,7 @@ ARG TARGETOS TARGETARCH
 RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH \
     go build -trimpath -ldflags "-s -w" -o /out/saltern-watch ./cmd/saltern-watch
 
-FROM debian:bookworm-slim
+FROM golang:1.22-bookworm
 ENV GOTOOLCHAIN=local
 WORKDIR /app
 COPY --from=build /out/saltern-watch /app/saltern-watch
