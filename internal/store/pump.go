@@ -61,7 +61,7 @@ func (d *DB) ListPumps() ([]*model.Pump, error) {
 
 // SavePump 更新泵状态/运行时长/保养时间。
 func (d *DB) SavePump(p *model.Pump) error {
-	var lastService any
+	var lastService int64
 	if !p.LastServiceAt.IsZero() {
 		lastService = p.LastServiceAt.Unix()
 	}

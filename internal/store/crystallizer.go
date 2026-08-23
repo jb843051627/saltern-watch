@@ -62,9 +62,9 @@ func (d *DB) ListCrystallizers() ([]*model.Crystallizer, error) {
 func (d *DB) SaveCrystallizer(c *model.Crystallizer) error {
 	res, err := d.db.Exec(
 		`UPDATE crystallizers SET name=?,capacity_tons=?,state=?,filled_tons=?,salinity=?,ripened_since=?,updated_at=?
-		 WHERE id=? AND state=?`,
+		 WHERE id=?`,
 		c.Name, c.CapacityTons, string(c.State), c.FilledTons, c.Salinity,
-		c.RipenedSince, time.Now().Unix(), c.ID, string(c.State))
+		c.RipenedSince, time.Now().Unix(), c.ID)
 	if err != nil {
 		return fmt.Errorf("store: save crystallizer: %w", err)
 	}
