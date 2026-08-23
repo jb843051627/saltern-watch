@@ -97,9 +97,9 @@ func (h *Handler) pondGroups(w http.ResponseWriter, _ *http.Request) {
 }
 
 type createGroupReq struct {
-	Name      string   `json:"name"`
-	PondIDs   []int64  `json:"pond_ids"`
-	MinKeepCm float64  `json:"min_keep_cm"`
+	Name      string  `json:"name"`
+	PondIDs   []int64 `json:"pond_ids"`
+	MinKeepCm float64 `json:"min_keep_cm"`
 }
 
 func (h *Handler) createGroup(w http.ResponseWriter, r *http.Request) {

@@ -16,12 +16,12 @@ import (
 
 // Engine 后台引擎：聚合三个循环与输卤 worker 池。
 type Engine struct {
-	svc  *service.Service
-	cfg  *config.Config
+	svc   *service.Service
+	cfg   *config.Config
 	clock clock.Clock
 
-	jobs     chan int64 // 待执行输卤任务 ID
-	stopped  chan struct{}
+	jobs    chan int64 // 待执行输卤任务 ID
+	stopped chan struct{}
 }
 
 // New 构造引擎。

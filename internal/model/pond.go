@@ -8,14 +8,14 @@ import (
 
 // 领域哨兵错误：上层用 errors.Is 判定语义。
 var (
-	ErrNotFound       = errors.New("saltern: entity not found")
-	ErrDuplicate      = errors.New("saltern: duplicate entity")
-	ErrInvalidInput   = errors.New("saltern: invalid input")
-	ErrInvalidState   = errors.New("saltern: invalid state transition")
-	ErrConflict       = errors.New("saltern: concurrent modification")
-	ErrPondNotReady   = errors.New("saltern: pond not ready for transfer")
-	ErrCrystFull      = errors.New("saltern: crystallizer at capacity")
-	ErrHarvestOpen    = errors.New("saltern: open harvest batch exists")
+	ErrNotFound        = errors.New("saltern: entity not found")
+	ErrDuplicate       = errors.New("saltern: duplicate entity")
+	ErrInvalidInput    = errors.New("saltern: invalid input")
+	ErrInvalidState    = errors.New("saltern: invalid state transition")
+	ErrConflict        = errors.New("saltern: concurrent modification")
+	ErrPondNotReady    = errors.New("saltern: pond not ready for transfer")
+	ErrCrystFull       = errors.New("saltern: crystallizer at capacity")
+	ErrHarvestOpen     = errors.New("saltern: open harvest batch exists")
 	ErrPumpUnavailable = errors.New("saltern: pump unavailable")
 )
 
@@ -23,22 +23,22 @@ var (
 type PondStatus string
 
 const (
-	PondActive PondStatus = "active"
-	PondIdle   PondStatus = "idle"
+	PondActive  PondStatus = "active"
+	PondIdle    PondStatus = "idle"
 	PondDrained PondStatus = "drained"
 )
 
 // Pond 蒸发池。海水沿 stage 0→4 逐级浓缩。
 type Pond struct {
-	ID          int64
-	Name        string
-	AreaM2      float64
-	Stage       int
-	Status      PondStatus
+	ID           int64
+	Name         string
+	AreaM2       float64
+	Stage        int
+	Status       PondStatus
 	BrineLevelCm float64 // 当前液位
-	TargetBe    float64 // 进入下一阶段的目标浓度（Bé）
-	CreatedAt   int64
-	UpdatedAt   int64
+	TargetBe     float64 // 进入下一阶段的目标浓度（Bé）
+	CreatedAt    int64
+	UpdatedAt    int64
 }
 
 // Validate 创建/更新时的字段校验。

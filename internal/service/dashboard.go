@@ -10,23 +10,23 @@ import (
 
 // Dashboard 看板汇总数据。
 type Dashboard struct {
-	PondStatus    map[model.PondStatus]int          `json:"pond_status"`
-	CrystState    map[model.CrystState]int          `json:"crystallizer_state"`
-	PumpStatus    map[model.PumpStatus]int          `json:"pump_status"`
-	TodayTons     float64                           `json:"today_tons"`
-	TodayByGrade  map[model.HarvestGrade]float64    `json:"today_by_grade"`
-	ActiveAlerts  int                               `json:"active_alerts"`
-	RainRisk      string                            `json:"rain_risk"`
-	EvapRateMM    float64                           `json:"evap_rate_mm"`
-	PendingJobs   int                               `json:"pending_jobs"`
-	LatestReadings map[int64]float64                `json:"latest_be"`
-	GeneratedAt   string                            `json:"generated_at"`
+	PondStatus     map[model.PondStatus]int       `json:"pond_status"`
+	CrystState     map[model.CrystState]int       `json:"crystallizer_state"`
+	PumpStatus     map[model.PumpStatus]int       `json:"pump_status"`
+	TodayTons      float64                        `json:"today_tons"`
+	TodayByGrade   map[model.HarvestGrade]float64 `json:"today_by_grade"`
+	ActiveAlerts   int                            `json:"active_alerts"`
+	RainRisk       string                         `json:"rain_risk"`
+	EvapRateMM     float64                        `json:"evap_rate_mm"`
+	PendingJobs    int                            `json:"pending_jobs"`
+	LatestReadings map[int64]float64              `json:"latest_be"`
+	GeneratedAt    string                         `json:"generated_at"`
 }
 
 // DashboardService 看板汇总。
 type DashboardService struct {
-	st    *store.DB
-	clock clock.Clock
+	st      *store.DB
+	clock   clock.Clock
 	reports *ReportService
 }
 
@@ -39,7 +39,7 @@ func NewDashboard(st *store.DB, ck clock.Clock, reports *ReportService) *Dashboa
 func (s *DashboardService) Snapshot() (*Dashboard, error) {
 	now := s.clock.Now()
 	d := &Dashboard{
-		TodayByGrade: map[model.HarvestGrade]float64{},
+		TodayByGrade:   map[model.HarvestGrade]float64{},
 		LatestReadings: map[int64]float64{},
 	}
 	var err error

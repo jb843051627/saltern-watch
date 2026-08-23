@@ -11,9 +11,9 @@ import (
 
 // PondGroup 蒸发池串联组（梯度推进链路）。
 type PondGroup struct {
-	ID       int64
-	Name     string
-	PondIDs  []int64 // 按海水流向排序
+	ID        int64
+	Name      string
+	PondIDs   []int64 // 按海水流向排序
 	MinKeepCm float64
 }
 

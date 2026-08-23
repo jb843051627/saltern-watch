@@ -19,8 +19,8 @@ const (
 type TargetKind string
 
 const (
-	TargetPump  TargetKind = "pump"
-	TargetPond  TargetKind = "pond"
+	TargetPump   TargetKind = "pump"
+	TargetPond   TargetKind = "pond"
 	TargetSensor TargetKind = "sensor"
 )
 
@@ -96,12 +96,12 @@ func (m *MaintenanceTask) Overdue(now time.Time) bool {
 
 // EventLog 状态变更审计事件。
 type EventLog struct {
-	ID        int64
-	Actor     string
+	ID         int64
+	Actor      string
 	EntityType string
-	EntityID  int64
-	Action    string
-	Detail    string
+	EntityID   int64
+	Action     string
+	Detail     string
 	OccurredAt time.Time
 }
 

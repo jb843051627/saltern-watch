@@ -65,8 +65,8 @@ func (h *Handler) listReadings(w http.ResponseWriter, r *http.Request) {
 }
 
 type batchReadingsReq struct {
-	Items []readingReq `json:"items"`
-	PondID int64       `json:"pond_id"`
+	Items  []readingReq `json:"items"`
+	PondID int64        `json:"pond_id"`
 }
 
 func (h *Handler) batchReadings(w http.ResponseWriter, r *http.Request) {

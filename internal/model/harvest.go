@@ -33,15 +33,15 @@ var MoistureLimit = map[HarvestGrade]float64{
 
 // HarvestBatch 收盐批次。
 type HarvestBatch struct {
-	ID            int64
+	ID             int64
 	CrystallizerID int64
-	Status        BatchStatus
-	Tons          float64
-	Moisture      float64
-	Grade         HarvestGrade
-	OpenedAt      time.Time
-	CompletedAt   *time.Time
-	Note          string
+	Status         BatchStatus
+	Tons           float64
+	Moisture       float64
+	Grade          HarvestGrade
+	OpenedAt       time.Time
+	CompletedAt    *time.Time
+	Note           string
 }
 
 // Validate 开批校验。

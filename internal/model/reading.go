@@ -16,14 +16,14 @@ const (
 
 // BrineReading 卤水读数。
 type BrineReading struct {
-	ID        int64
-	PondID    int64
-	TakenAt   time.Time
-	Be        float64 // 波美度浓度
-	TempC     float64 // 卤温
-	LevelCm   float64 // 液位
-	Source    string  // manual / sensor:<id>
-	Flag      ReadingFlag
+	ID         int64
+	PondID     int64
+	TakenAt    time.Time
+	Be         float64 // 波美度浓度
+	TempC      float64 // 卤温
+	LevelCm    float64 // 液位
+	Source     string  // manual / sensor:<id>
+	Flag       ReadingFlag
 	RecordedAt time.Time
 }
 

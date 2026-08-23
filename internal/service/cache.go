@@ -8,11 +8,11 @@ import (
 
 // PondSnapshot 单池最新读数快照。
 type PondSnapshot struct {
-	PondID int64
-	Be     float64
-	TempC  float64
+	PondID  int64
+	Be      float64
+	TempC   float64
 	LevelCm float64
-	Flag   model.ReadingFlag
+	Flag    model.ReadingFlag
 }
 
 // ReadingCache 进程内读数快照缓存（引擎评估循环与 HTTP 查询共享）。

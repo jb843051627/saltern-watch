@@ -9,19 +9,19 @@ import (
 
 // Service 聚合各业务子服务。
 type Service struct {
-	Ponds        *PondService
-	Brine        *BrineService
+	Ponds         *PondService
+	Brine         *BrineService
 	Crystallizers *CrystallizerService
-	Harvests     *HarvestService
-	Pumps        *PumpService
-	Transfers    *TransferService
-	Weather      *WeatherService
-	Alerts       *AlertService
-	Maintenance  *MaintenanceService
-	Reports      *ReportService
-	Quality      *QualityService
-	Sensors      *SensorService
-	PondGroups   *PondGroupService
+	Harvests      *HarvestService
+	Pumps         *PumpService
+	Transfers     *TransferService
+	Weather       *WeatherService
+	Alerts        *AlertService
+	Maintenance   *MaintenanceService
+	Reports       *ReportService
+	Quality       *QualityService
+	Sensors       *SensorService
+	PondGroups    *PondGroupService
 
 	store *store.DB
 	clock clock.Clock

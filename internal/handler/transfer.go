@@ -6,11 +6,11 @@ import (
 )
 
 type transferReq struct {
-	FromPondID  int64  `json:"from_pond_id"`
-	ToPondID    int64  `json:"to_pond_id"`
-	PumpID      int64  `json:"pump_id"`
+	FromPondID  int64   `json:"from_pond_id"`
+	ToPondID    int64   `json:"to_pond_id"`
+	PumpID      int64   `json:"pump_id"`
 	VolumeM3    float64 `json:"volume_m3"`
-	ScheduledAt string `json:"scheduled_at"`
+	ScheduledAt string  `json:"scheduled_at"`
 }
 
 func (h *Handler) scheduleTransfer(w http.ResponseWriter, r *http.Request) {

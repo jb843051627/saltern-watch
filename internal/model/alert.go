@@ -31,8 +31,8 @@ func (s AlertSeverity) Escalate() AlertSeverity {
 type AlertStatus string
 
 const (
-	AlertOpen  AlertStatus = "open"
-	AlertAcked AlertStatus = "acked"
+	AlertOpen   AlertStatus = "open"
+	AlertAcked  AlertStatus = "acked"
 	AlertClosed AlertStatus = "closed"
 )
 

@@ -71,16 +71,16 @@ func (s TransferStatus) Terminal() bool {
 
 // TransferJob 池间输卤任务。
 type TransferJob struct {
-	ID         int64
-	FromPondID int64
-	ToPondID   int64
-	PumpID     int64
-	VolumeM3   float64
-	Status     TransferStatus
+	ID          int64
+	FromPondID  int64
+	ToPondID    int64
+	PumpID      int64
+	VolumeM3    float64
+	Status      TransferStatus
 	ScheduledAt time.Time
-	StartedAt  *time.Time
-	EndedAt    *time.Time
-	FailReason string
+	StartedAt   *time.Time
+	EndedAt     *time.Time
+	FailReason  string
 }
 
 // Validate 创建校验。

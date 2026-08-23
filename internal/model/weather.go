@@ -8,13 +8,13 @@ import (
 
 // WeatherSample 气象采样。
 type WeatherSample struct {
-	ID          int64
-	TakenAt     time.Time
-	AirTempC    float64
-	Humidity    float64 // 0~1
-	WindMS      float64 // m/s
-	RainfallMM  float64
-	EvapRateMM  float64 // mm/day，由服务层计算填充
+	ID         int64
+	TakenAt    time.Time
+	AirTempC   float64
+	Humidity   float64 // 0~1
+	WindMS     float64 // m/s
+	RainfallMM float64
+	EvapRateMM float64 // mm/day，由服务层计算填充
 }
 
 // Validate 校验气象样本字段。
