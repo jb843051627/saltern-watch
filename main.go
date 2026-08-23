@@ -1,4 +1,4 @@
-// Command saltern-watch keeps `go run .` aligned with the service command.
+// 根入口把 `go run .` 转发到实际服务命令。
 package main
 
 import (
