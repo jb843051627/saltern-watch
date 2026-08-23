@@ -19,6 +19,9 @@ type Service struct {
 	Alerts       *AlertService
 	Maintenance  *MaintenanceService
 	Reports      *ReportService
+	Quality      *QualityService
+	Sensors      *SensorService
+	PondGroups   *PondGroupService
 
 	store *store.DB
 	clock clock.Clock
@@ -38,6 +41,9 @@ func New(st *store.DB, ck clock.Clock, cfg *config.Config) *Service {
 	s.Alerts = &AlertService{st: st, clock: ck}
 	s.Maintenance = &MaintenanceService{st: st, clock: ck}
 	s.Reports = &ReportService{st: st, clock: ck, zone: cfg.LocalZone}
+	s.Quality = &QualityService{st: st, clock: ck}
+	s.Sensors = &SensorService{st: st, clock: ck}
+	s.PondGroups = &PondGroupService{st: st, clock: ck}
 	return s
 }
 

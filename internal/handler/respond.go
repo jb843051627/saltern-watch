@@ -4,6 +4,7 @@ package handler
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/jb843051627/saltern-watch/internal/model"
@@ -46,4 +47,17 @@ func decode(r *http.Request, v any) error {
 		return errors.Join(model.ErrInvalidInput, err)
 	}
 	return nil
+}
+
+// intQuery 解析整型查询参数（缺失返回 0）。
+func intQuery(r *http.Request, key string) (int64, error) {
+	v := r.URL.Query().Get(key)
+	if v == "" {
+		return 0, nil
+	}
+	var out int64
+	if _, err := fmt.Sscanf(v, "%d", &out); err != nil {
+		return 0, model.ErrInvalidInput
+	}
+	return out, nil
 }

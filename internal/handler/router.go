@@ -61,6 +61,14 @@ func (h *Handler) routes() {
 	m.HandleFunc("POST /api/v1/maintenance", h.planMaintenance)
 	m.HandleFunc("POST /api/v1/maintenance/{id}/complete", h.completeMaintenance)
 
+	m.HandleFunc("POST /api/v1/labs", h.recordLab)
+	m.HandleFunc("GET /api/v1/labs", h.listLabs)
+	m.HandleFunc("POST /api/v1/sensors", h.registerSensor)
+	m.HandleFunc("POST /api/v1/sensors/{id}/calibrate", h.calibrateSensor)
+	m.HandleFunc("GET /api/v1/pond-groups", h.pondGroups)
+	m.HandleFunc("POST /api/v1/pond-groups", h.createGroup)
+	m.HandleFunc("GET /api/v1/pond-groups/{id}/balance", h.groupBalance)
+
 	m.HandleFunc("GET /api/v1/reports/daily.csv", h.dailyReport)
 	m.HandleFunc("/", h.serveStatic)
 }

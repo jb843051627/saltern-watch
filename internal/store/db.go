@@ -150,6 +150,40 @@ func (d *DB) migrate() error {
 			note TEXT NOT NULL DEFAULT '',
 			created_at INTEGER NOT NULL
 		)`,
+		`CREATE TABLE IF NOT EXISTS lab_samples (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			crystallizer_id INTEGER NOT NULL REFERENCES crystallizers(id),
+			taken_at INTEGER NOT NULL,
+			na_mg_ratio REAL NOT NULL,
+			sulfate_ppm REAL NOT NULL,
+			insoluble_ppm REAL NOT NULL,
+			analyst TEXT NOT NULL,
+			purity REAL NOT NULL DEFAULT 0
+		)`,
+		`CREATE INDEX IF NOT EXISTS idx_lab_cryst ON lab_samples(crystallizer_id, taken_at DESC)`,
+		`CREATE TABLE IF NOT EXISTS sensors (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			pond_id INTEGER NOT NULL REFERENCES ponds(id),
+			kind TEXT NOT NULL,
+			model TEXT NOT NULL,
+			active INTEGER NOT NULL DEFAULT 1,
+			offset_be REAL NOT NULL DEFAULT 0,
+			updated INTEGER NOT NULL
+		)`,
+		`CREATE TABLE IF NOT EXISTS calibrations (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			sensor_id INTEGER NOT NULL REFERENCES sensors(id),
+			reference_be REAL NOT NULL,
+			raw_be REAL NOT NULL,
+			offset REAL NOT NULL,
+			created_at INTEGER NOT NULL
+		)`,
+		`CREATE TABLE IF NOT EXISTS pond_groups (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			name TEXT NOT NULL UNIQUE,
+			pond_ids TEXT NOT NULL,
+			min_keep_cm REAL NOT NULL DEFAULT 20
+		)`,
 		`CREATE TABLE IF NOT EXISTS event_logs (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			actor TEXT NOT NULL,
