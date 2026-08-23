@@ -2,7 +2,6 @@ package service
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/jb843051627/saltern-watch/internal/clock"
 	"github.com/jb843051627/saltern-watch/internal/model"
