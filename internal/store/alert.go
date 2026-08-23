@@ -106,10 +106,10 @@ func (d *DB) UpdateAlertStatus(id int64, status model.AlertStatus, ts time.Time)
 }
 
 // UpdateAlertObservation 持久化重复触发后的级别/计数/最近时间。
-func (d *DB) UpdateAlertObservation(id int64, sev model.AlertSeverity, count int, lastSeen time.Time) error {
+func (d *DB) UpdateAlertObservation(id int64, sev model.AlertSeverity, count int, recentAt time.Time) error {
 	res, err := d.db.Exec(
 		`UPDATE alerts SET severity=?,count=?,last_seen_at=? WHERE id=?`,
-		string(sev), count, lastSeen.Unix(), id)
+		string(sev), count, recentAt.Unix(), id)
 	if err != nil {
 		return fmt.Errorf("store: update alert observation: %w", err)
 	}

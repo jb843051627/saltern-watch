@@ -14,14 +14,14 @@ func (d *DB) CreatePump(p *model.Pump) error {
 	if err := p.Validate(); err != nil {
 		return err
 	}
-	var lastService int64
+	var serviceAt int64
 	if !p.LastServiceAt.IsZero() {
-		lastService = p.LastServiceAt.Unix()
+		serviceAt = p.LastServiceAt.Unix()
 	}
 	res, err := d.db.Exec(
 		`INSERT INTO pumps(name,capacity_m3h,status,hours_run,last_service_at,created_at)
 		 VALUES(?,?,?,?,?,?)`,
-		p.Name, p.CapacityM3H, string(p.Status), p.HoursRun, lastService, time.Now().Unix())
+		p.Name, p.CapacityM3H, string(p.Status), p.HoursRun, serviceAt, time.Now().Unix())
 	if err != nil {
 		return wrapInsert("pump", err)
 	}
@@ -61,13 +61,13 @@ func (d *DB) ListPumps() ([]*model.Pump, error) {
 
 // SavePump 更新泵状态/运行时长/保养时间。
 func (d *DB) SavePump(p *model.Pump) error {
-	var lastService int64
+	var serviceAt int64
 	if !p.LastServiceAt.IsZero() {
-		lastService = p.LastServiceAt.Unix()
+		serviceAt = p.LastServiceAt.Unix()
 	}
 	res, err := d.db.Exec(
 		`UPDATE pumps SET name=?,capacity_m3h=?,status=?,hours_run=?,last_service_at=? WHERE id=?`,
-		p.Name, p.CapacityM3H, string(p.Status), p.HoursRun, lastService, p.ID)
+		p.Name, p.CapacityM3H, string(p.Status), p.HoursRun, serviceAt, p.ID)
 	if err != nil {
 		return fmt.Errorf("store: save pump: %w", err)
 	}
@@ -98,8 +98,8 @@ func (d *DB) ListPumpsNeedingService(sinceHours float64) ([]*model.Pump, error) 
 func scanPump(row rowScanner) (*model.Pump, error) {
 	var p model.Pump
 	var status string
-	var lastService sql.NullInt64
-	err := row.Scan(&p.ID, &p.Name, &p.CapacityM3H, &status, &p.HoursRun, &lastService, &p.CreatedAt)
+	var serviceAt sql.NullInt64
+	err := row.Scan(&p.ID, &p.Name, &p.CapacityM3H, &status, &p.HoursRun, &serviceAt, &p.CreatedAt)
 	if errors.Is(err, sql.ErrNoRows) {
 		return nil, model.ErrNotFound
 	}
@@ -107,8 +107,8 @@ func scanPump(row rowScanner) (*model.Pump, error) {
 		return nil, fmt.Errorf("store: scan pump: %w", err)
 	}
 	p.Status = model.PumpStatus(status)
-	if lastService.Valid && lastService.Int64 > 0 {
-		p.LastServiceAt = time.Unix(lastService.Int64, 0)
+	if serviceAt.Valid && serviceAt.Int64 > 0 {
+		p.LastServiceAt = time.Unix(serviceAt.Int64, 0)
 	}
 	return &p, nil
 }

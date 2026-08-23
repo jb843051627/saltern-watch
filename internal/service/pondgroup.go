@@ -28,17 +28,17 @@ func (s *PondGroupService) Create(name string, pondIDs []int64, minKeepCm float6
 	if len(pondIDs) < 2 {
 		return nil, fmt.Errorf("%w: group needs at least 2 ponds", model.ErrInvalidInput)
 	}
-	var lastStage = -1
+	var priorStage = -1
 	for _, id := range pondIDs {
 		p, err := s.st.GetPond(id)
 		if err != nil {
 			return nil, fmt.Errorf("pond %d: %w", id, err)
 		}
-		if p.Stage <= lastStage {
+		if p.Stage <= priorStage {
 			return nil, fmt.Errorf("%w: pond %d stage %d breaks ascending gradient",
 				model.ErrInvalidInput, id, p.Stage)
 		}
-		lastStage = p.Stage
+		priorStage = p.Stage
 	}
 	res, err := s.st.SQL().Exec(
 		`INSERT INTO pond_groups(name,pond_ids,min_keep_cm) VALUES(?,?,?)`,
