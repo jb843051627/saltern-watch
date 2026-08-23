@@ -155,6 +155,48 @@ func (s *SensorService) ApplyOffset(sensorID int64, rawBe float64) (float64, err
 	return out, nil
 }
 
+// WeakSamples 品位低于阈值的化验样本清单（跨结晶池巡检）。
+func (s *QualityService) WeakSamples(threshold float64, limit int) ([]*model.LabSample, error) {
+	if limit <= 0 {
+		limit = 20
+	}
+	var out []*model.LabSample
+	crysts, err := s.st.ListCrystallizers()
+	if err != nil {
+		return nil, err
+	}
+	for _, c := range crysts {
+		samples, err := s.st.ListLabSamplesByCryst(c.ID, limit)
+		if err != nil {
+			return nil, err
+		}
+		for _, sm := range samples {
+			if sm.Purity < threshold {
+				out = append(out, sm)
+				if len(out) >= limit {
+					return out, nil
+				}
+			}
+		}
+	}
+	return out, nil
+}
+
+// InactiveSensors 停用传感器列表。
+func (s *SensorService) InactiveList() ([]*model.Sensor, error) {
+	all, err := s.allSensors()
+	if err != nil {
+		return nil, err
+	}
+	var out []*model.Sensor
+	for _, sen := range all {
+		if !sen.Active {
+			out = append(out, sen)
+		}
+	}
+	return out, nil
+}
+
 // SensorsByPond 池关联传感器列表（简化：全量过滤）。
 func (s *SensorService) SensorsByPond(pondID int64) ([]*model.Sensor, error) {
 	all, err := s.allSensors()
