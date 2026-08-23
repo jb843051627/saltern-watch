@@ -1,5 +1,5 @@
 # 盐田监控服务多架构镜像（固定 golang:1.22-bookworm，禁止更换）
-FROM --platform=$BUILDPLATFORM golang:1.22-bookworm AS build
+FROM golang:1.22-bookworm AS build
 ENV GOPROXY=https://goproxy.cn,direct
 ENV GOTOOLCHAIN=local
 WORKDIR /src
