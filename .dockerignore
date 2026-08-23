@@ -1,0 +1,11 @@
+.git/
+*.db
+*.db-shm
+*.db-wal
+cases/
+_docker/
+repo/
+__pycache__/
+*.md
+!README.md
+saltern.db*
