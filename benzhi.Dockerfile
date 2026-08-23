@@ -18,4 +18,4 @@ ENV SALTERN_DB_PATH=/data/saltern.db
 ENV SALTERN_STATIC_DIR=/src/web/static
 VOLUME ["/data"]
 EXPOSE 8080
-ENTRYPOINT ["/app/saltern-watch"]
+ENTRYPOINT ["/src/saltern-watch"]
