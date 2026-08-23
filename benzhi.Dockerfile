@@ -10,13 +10,12 @@ ARG TARGETOS TARGETARCH
 RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH \
     go build -trimpath -ldflags "-s -w" -o /out/saltern-watch ./cmd/saltern-watch
 
-FROM golang:1.22-bookworm
+FROM build
 ENV GOTOOLCHAIN=local
-WORKDIR /app
-COPY --from=build /src /app
-COPY --from=build /out/saltern-watch /app/saltern-watch
+WORKDIR /src
+COPY --from=build /out/saltern-watch /src/saltern-watch
 ENV SALTERN_DB_PATH=/data/saltern.db
-ENV SALTERN_STATIC_DIR=/app/web/static
+ENV SALTERN_STATIC_DIR=/src/web/static
 VOLUME ["/data"]
 EXPOSE 8080
 ENTRYPOINT ["/app/saltern-watch"]
