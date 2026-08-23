@@ -13,8 +13,8 @@ RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH \
 FROM golang:1.22-bookworm
 ENV GOTOOLCHAIN=local
 WORKDIR /app
+COPY --from=build /src /app
 COPY --from=build /out/saltern-watch /app/saltern-watch
-COPY web/static /app/web/static
 ENV SALTERN_DB_PATH=/data/saltern.db
 ENV SALTERN_STATIC_DIR=/app/web/static
 VOLUME ["/data"]
