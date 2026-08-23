@@ -24,9 +24,17 @@ type AlertService struct {
 	clock clock.Clock
 }
 
-// Raise 触发/聚合告警。
+// Raise 触发/聚合告警：同键未关闭告警做计数累加与粘性升级。
 func (s *AlertService) Raise(kind string, sev model.AlertSeverity, subjectType string, subjectID int64, message string) (*model.Alert, error) {
 	now := s.clock.Now()
+	key := model.DedupKeyOf(kind, subjectType, subjectID)
+	if existing, err := s.st.FindOpenByDedupKey(key); err == nil {
+		existing.Observe(sev, now)
+		if err := s.st.UpdateAlertObservation(existing.ID, existing.Severity, existing.Count, existing.LastSeenAt); err != nil {
+			return nil, err
+		}
+		return existing, nil
+	}
 	a := model.NewAlert(kind, sev, subjectType, subjectID, message, now)
 	if err := s.st.UpsertAlert(a); err != nil {
 		return nil, err

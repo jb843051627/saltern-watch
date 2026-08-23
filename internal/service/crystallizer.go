@@ -134,7 +134,7 @@ func (s *CrystallizerService) EstimateYield(c *model.Crystallizer) float64 {
 	}
 	ratio := c.FilledTons / c.CapacityTons
 	yield := c.CapacityTons * ratio * 0.32 // 析出率经验值
-	now := time.Now()
+	now := s.clock.Now()
 	if c.State == model.CrystRipening && c.RipenessHours(now) > 0 {
 		maturity := c.RipenessHours(now) / 72.0
 		if maturity > 1 {

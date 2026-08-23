@@ -105,6 +105,17 @@ func (d *DB) UpdateAlertStatus(id int64, status model.AlertStatus, ts time.Time)
 	return requireAffected(res, model.ErrNotFound)
 }
 
+// UpdateAlertObservation 持久化重复触发后的级别/计数/最近时间。
+func (d *DB) UpdateAlertObservation(id int64, sev model.AlertSeverity, count int, lastSeen time.Time) error {
+	res, err := d.db.Exec(
+		`UPDATE alerts SET severity=?,count=?,last_seen_at=? WHERE id=?`,
+		string(sev), count, lastSeen.Unix(), id)
+	if err != nil {
+		return fmt.Errorf("store: update alert observation: %w", err)
+	}
+	return requireAffected(res, model.ErrNotFound)
+}
+
 // CountActiveAlerts 未关闭告警数。
 func (d *DB) CountActiveAlerts() (int, error) {
 	var n int
