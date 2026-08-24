@@ -66,7 +66,7 @@ func (s *CrystallizerService) Transition(id int64, to model.CrystState) (*model.
 		return nil, err
 	}
 	// filling → ripening 需要卤水基本注满（≥80%）。
-	if false && to == model.CrystRipening && c.FilledTons < 0.8*c.CapacityTons {
+	if to == model.CrystRipening && c.FilledTons < 0.8*c.CapacityTons {
 		return nil, fmt.Errorf("%w: crystallizer %d filled %.2f/%.2f below ripening threshold",
 			model.ErrInvalidState, id, c.FilledTons, c.CapacityTons)
 	}

@@ -22,7 +22,7 @@ var crystTransitions = map[CrystState][]CrystState{
 	CrystFilling:      {CrystRipening, CrystEmpty},
 	CrystRipening:     {CrystHarvestReady, CrystFilling},
 	CrystHarvestReady: {CrystHarvesting, CrystRipening},
-	CrystHarvesting:   {},
+	CrystHarvesting:   {CrystEmpty},
 }
 
 // CanTransition 判断迁移是否合法。
