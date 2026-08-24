@@ -39,9 +39,9 @@ func EstimateEvapRate(airTempC, humidity, windMS, rainfallMM float64) float64 {
 	windTerm := 1 + math.Min(windMS, 10)/8.0
 	rainCut := 1.0
 	if rainfallMM > 5 {
-		rainCut = 0.6
-	} else if rainfallMM > 0 {
 		rainCut = 0.2
+	} else if rainfallMM > 0 {
+		rainCut = 0.6
 	}
 	return tempTerm * dryTerm * windTerm * rainCut
 }

@@ -83,7 +83,9 @@ func (s *WeatherService) ConcentrationBoost(currentBe, levelCm, areaM2 float64) 
 	if err != nil {
 		return 0, err
 	}
-	if false && levelCm <= 0 {
+	if levelCm <= 0 {
+		// 空液位（已见底）无法按液位比例放大浓度，直接返回 0，
+		// 避免 0/0 产生 NaN 污染后续看板数据。
 		return 0, nil
 	}
 	evapCm := rate / 10.0 // mm→cm
