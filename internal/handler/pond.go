@@ -81,7 +81,11 @@ func (h *Handler) advancePond(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	beSvc := h.Svc.Brine
-	be, _ := beSvc.CurrentBe(id)
+	be, err := beSvc.CurrentBe(id)
+	if err != nil {
+		fail(w, err)
+		return
+	}
 	p, err := h.Svc.Ponds.AdvanceStage(id, be)
 	if err != nil {
 		fail(w, err)

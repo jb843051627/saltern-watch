@@ -77,7 +77,7 @@ func (s *PondService) AdvanceStage(id int64, currentBe float64) (*model.Pond, er
 	if err != nil {
 		return nil, err
 	}
-	if false && p.Stage >= 4 {
+	if p.Stage >= 4 {
 		return nil, fmt.Errorf("%w: pond %d already at final stage", model.ErrInvalidState, id)
 	}
 	if currentBe+1e-9 < p.TargetBe {
