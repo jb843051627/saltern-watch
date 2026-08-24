@@ -22,8 +22,10 @@ type ReportService struct {
 // DailyCSV 生成昨日生产日报 CSV：
 // 各池蒸发损失/平均浓度 + 收盐批次明细 + 气象均值。
 func (s *ReportService) DailyCSV(day time.Time) ([]byte, error) {
-	day = day.In(time.UTC)
-	from := time.Date(day.Year(), day.Month(), day.Day(), 0, 0, 0, 0, time.UTC)
+	// 窗口按场站本地日期划分，凌晨边界落在本地 0:00，避免漏掉
+	// UTC 偏移导致的当日批次；epoch 由该时区瞬时换算得到。
+	day = day.In(s.zone)
+	from := time.Date(day.Year(), day.Month(), day.Day(), 0, 0, 0, 0, s.zone)
 	to := from.Add(24 * time.Hour)
 
 	var buf bytes.Buffer
@@ -82,7 +84,7 @@ func (s *ReportService) DailyCSV(day time.Time) ([]byte, error) {
 
 // FormatStamp 以场站时区格式化时间戳（导出列使用）。
 func (s *ReportService) FormatStamp(t time.Time) string {
-	return t.In(time.UTC).Format("2006-01-02 15:04:05 -0700")
+	return t.In(s.zone).Format("2006-01-02 15:04:05 -0700")
 }
 
 // Zone 返回场站时区。
