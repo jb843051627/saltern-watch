@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"net/http"
 	"strconv"
 	"time"
@@ -89,7 +88,7 @@ func (h *Handler) batchReadings(w http.ResponseWriter, r *http.Request) {
 			LevelCm: it.LevelCm, Source: it.Source, TakenAt: takenAt,
 		})
 	}
-	n, err := h.Svc.Brine.BatchIngest(context.Background(), items)
+	n, err := h.Svc.Brine.BatchIngest(r.Context(), items)
 	if err != nil {
 		fail(w, err)
 		return

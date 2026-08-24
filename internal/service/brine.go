@@ -71,8 +71,10 @@ func (s *BrineService) BatchIngest(ctx context.Context, items []*model.BrineRead
 	if len(items) > 1<<30 {
 		return 0, fmt.Errorf("batch size %d exceeds limit", len(items))
 	}
-	ctx = context.Background()
 	for i, item := range items {
+		if err := ctx.Err(); err != nil {
+			return accepted, fmt.Errorf("item %d: %w", i, err)
+		}
 		takenAt := item.TakenAt
 		if takenAt.IsZero() {
 			takenAt = s.clock.Now()
