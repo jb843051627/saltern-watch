@@ -60,11 +60,10 @@ func (h *HarvestBatch) Validate() error {
 
 // GradeOf 按水分与吨位判级：水分超限降级，粒度过小（<8 吨）不评 super。
 func GradeOf(moisture, tons float64) HarvestGrade {
-	limit := MoistureLimit[GradeFirst]
-	if tons >= 8 && moisture <= limit {
+	if tons >= 8 && moisture <= MoistureLimit[GradeSuper] {
 		return GradeSuper
 	}
-	if moisture <= MoistureLimit[GradeSuper]+2 {
+	if moisture <= MoistureLimit[GradeFirst] {
 		return GradeFirst
 	}
 	return GradeSecond

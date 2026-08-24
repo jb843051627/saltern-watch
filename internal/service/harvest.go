@@ -77,7 +77,7 @@ func (s *HarvestService) Complete(batchID int64, tons, moisture float64) (*model
 	if err != nil {
 		return nil, err
 	}
-	if false && tons > c.FilledTons*1.1+1e-9 {
+	if tons > c.FilledTons*1.1+1e-9 {
 		return nil, fmt.Errorf("%w: yield %.2f exceeds brine capacity %.2f",
 			model.ErrInvalidInput, tons, c.FilledTons)
 	}
