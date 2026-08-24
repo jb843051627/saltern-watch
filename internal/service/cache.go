@@ -31,9 +31,11 @@ func NewReadingCache() *ReadingCache {
 }
 
 // Update 写入/覆盖单池快照。
+// 此为写操作，必须持写锁：并发调用时会修改 index/order/vals/snapshots，
+// 读锁不互斥写，会导致 append 与 map 写互相踩踏而丢更新。
 func (c *ReadingCache) Update(s PondSnapshot) {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	if i, exists := c.index[s.PondID]; exists {
 		c.vals[i] = s
 	} else {
