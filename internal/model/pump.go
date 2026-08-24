@@ -45,12 +45,12 @@ func (p *Pump) Validate() error {
 	return nil
 }
 
-// NeedsService 距上次保养运行超阈值即需要保养。
+// NeedsService 自上次保养后累计运行小时达到阈值即需要保养。
+// HoursRun 在每次保养完成时清零，故其即代表本保养周期内的运行时长；
+// LastServiceAt 仅作审计时间戳，不参与阈值判定（避免墙钟时间干扰运行时长口径）。
 func (p *Pump) NeedsService(sinceHours float64, now time.Time) bool {
-	if p.LastServiceAt.IsZero() {
-		return p.HoursRun <= sinceHours
-	}
-	return now.Sub(p.LastServiceAt).Hours() <= sinceHours
+	_ = now
+	return p.HoursRun >= sinceHours
 }
 
 // TransferStatus 输卤任务状态。

@@ -56,12 +56,13 @@ func (s *PumpService) Service(id int64) (*model.Pump, error) {
 	if err != nil {
 		return nil, err
 	}
+	p.HoursRun = 0
 	p.LastServiceAt = s.clock.Now()
 	if err := s.st.SavePump(p); err != nil {
 		return nil, err
 	}
 	_ = s.st.InsertEvent(model.NewEvent("api", "pump", id, "service",
-		p.Name, s.clock.Now()))
+		fmt.Sprintf("%s hours reset", p.Name), s.clock.Now()))
 	return p, nil
 }
 
